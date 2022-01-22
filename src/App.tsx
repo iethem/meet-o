@@ -1,26 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import * as React from "react";
+import {
+  Routes,
+  Route,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
 
-function App() {
+import { useAuth } from "./use-auth";
+import LoginPage from "./LoginPage";
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={<PublicPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route
+        path="/protected"
+        element={
+          <RequireAuth>
+            <ProtectedPage />
+          </RequireAuth>
+        }
+      />
+    </Routes>
   );
 }
 
-export default App;
+function RequireAuth({ children }: { children: JSX.Element }) {
+  let auth = useAuth();
+  let location = useLocation();
+
+  console.log('auth', auth);
+
+  if (!auth.user) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  return children;
+}
+
+function PublicPage() {
+  return <div>Public</div>;
+}
+
+function ProtectedPage() {
+  return <div>Protected</div>;
+}
