@@ -22,9 +22,7 @@ function LoginPage() {
   let navigate = useNavigate();
   // let location = useLocation();
   let auth = useAuth();
-
-  console.log('auth', auth);
-
+  
   // let from = location.state?.from?.pathname || "/";
 
   return (

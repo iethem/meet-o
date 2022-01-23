@@ -2,18 +2,20 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 
-import { ProvideAuth } from "./use-auth";
+import { AuthProvider } from "./use-auth";
+import { PeerConnectionProvider } from "./use-pc";
 import App from "./App";
 // import reportWebVitals from './reportWebVitals';
 
-
 ReactDOM.render(
   <React.StrictMode>
-    <ProvideAuth>
+    <AuthProvider>
       <BrowserRouter>
-        <App />
+        <PeerConnectionProvider>
+          <App />
+        </PeerConnectionProvider>
       </BrowserRouter>
-    </ProvideAuth>
+    </AuthProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

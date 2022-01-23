@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, createContext } from "react";
 import * as firebase from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
@@ -24,10 +24,10 @@ if (!firebase.getApps().length) {
 const firebaseAuth = getAuth();
 export const getFirebaseAuth = () => firebaseAuth;
 
-let AuthContext = React.createContext<any>(null!);
+let AuthContext = createContext<any>(null!);
 
-export function ProvideAuth({ children }: any) {
-  const auth = useProvideAuth();
+export function AuthProvider({ children }: any) {
+  const auth = useAuthProvider();
   return <AuthContext.Provider value={auth}>{auth.loading ? <div>Loading...</div> : children}</AuthContext.Provider>;
 }
 
@@ -35,7 +35,7 @@ export const useAuth = () => {
   return useContext(AuthContext);
 };
 
-function useProvideAuth() {
+function useAuthProvider() {
   const [user, setUser] = useState<any>();
   const [loading, setLoading] = useState<any>(true);
 
